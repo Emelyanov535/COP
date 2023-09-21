@@ -23,10 +23,6 @@ namespace WinFormsLibrary
             get { 
                 return customListBox.Items; 
             }
-            set
-            {
-                customListBox.Items.AddRange(value);
-            }
         }
 
         // Метод для очистки списка
@@ -48,7 +44,10 @@ namespace WinFormsLibrary
             }
             set
             {
-                customListBox.SelectedItem = value;
+                if (customListBox.Items.Contains(value))
+                {
+                    customListBox.SelectedItem = value;
+                }
             }
         }
 

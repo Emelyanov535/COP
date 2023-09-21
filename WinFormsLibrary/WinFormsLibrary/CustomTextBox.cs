@@ -5,16 +5,37 @@ namespace WinFormsLibrary
 {
     public partial class CustomTextBox : UserControl
     {
+        public event EventHandler ValueChanged;
+        public string Error { get; private set; }
+
         public CustomTextBox()
         {
             InitializeComponent();
+            CustomInitialize();
+            Error = string.Empty;
         }
 
-        public class InvalidDateFormatException : Exception
+        public void CustomInitialize()
         {
-            public InvalidDateFormatException(string message) : base(message)
+            checkBoxDate.CheckedChanged += (sender, e) =>
             {
-            }
+                textBoxDate.Enabled = !checkBoxDate.Checked;
+                if (checkBoxDate.Checked)
+                {
+                    textBoxDate.Text = string.Empty;
+                }
+            };
+
+            textBoxDate.TextChanged += (sender, e) =>
+            {
+                OnValueChanged(EventArgs.Empty);
+            };
+        }
+
+        protected virtual void OnValueChanged(EventArgs e)
+        {
+            EventHandler handler = ValueChanged;
+            handler?.Invoke(this, e);
         }
 
         public DateTime? DateValue
@@ -23,7 +44,8 @@ namespace WinFormsLibrary
             {
                 if (!checkBoxDate.Checked || string.IsNullOrWhiteSpace(textBoxDate.Text))
                 {
-                    throw new InvalidDateFormatException("Галочка не проставлена или не введено значени");
+                    Error = "Галочка не проставлена или не введено значение";
+                    return null;
                 }
 
                 if (DateTime.TryParseExact(textBoxDate.Text, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime result))
@@ -32,7 +54,8 @@ namespace WinFormsLibrary
                 }
                 else
                 {
-                    throw new InvalidDateFormatException("Введенное значение не соответствует требуемому формату (dd.MM.yyyy)");
+                    Error = "Введенное значение не соответствует требуемому формату (dd.MM.yyyy)";
+                    return null;
                 }
             }
             set
@@ -50,15 +73,17 @@ namespace WinFormsLibrary
             }
         }
 
-        public event EventHandler CheckBoxValueChanged
+        public event EventHandler CustomValueChanged
         {
             add
             {
                 checkBoxDate.CheckedChanged += value;
+                textBoxDate.TextChanged += value;
             }
             remove
             {
                 checkBoxDate.CheckedChanged -= value;
+                textBoxDate.TextChanged -= value;
             }
         }
     }
