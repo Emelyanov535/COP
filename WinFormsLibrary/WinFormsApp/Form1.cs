@@ -130,5 +130,21 @@ namespace WinFormsApp
             };
             customComponentForXlsTable1.GenerateExcelDocument(filePath, documentTitle, tablesList);
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
+            string documentTitle = "Заголовок документа";
+            List<string> columnHeaderNames = new List<string> { "Column1", "Column2", "Column3" };
+            List<string> rowHeaderNames = new List<string> { "Row1", "Row2", "Row3" };
+            List<List<object>> tableData = new List<List<object>>
+            {
+                new List<object> { "Data1", "Data2", "Data3" },
+                new List<object> { "Data4", "Data5", "Data6" },
+                new List<object> { "Data7", "Data8", "Data9" }
+            };
+            componentWithSettings1.GenerateTableDocument(filePath, documentTitle, columnHeaderNames, rowHeaderNames, tableData);
+
+        }
     }
 }
