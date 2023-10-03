@@ -1,5 +1,5 @@
 using System;
-using WinFormsLibrary;
+using WinFormsLibrary.visual;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinFormsApp
@@ -41,7 +41,7 @@ namespace WinFormsApp
         private void Form1_Load(object sender, EventArgs e)
         {
             userControl11.SelectedValueChanged += UserControl1_SelectedValueChanged;
-            customTextBox1.CheckBoxValueChanged += checkBoxDate_SelectedValueChanged;
+            /* customTextBox1.CustomValueChanged += checkBoxDate_SelectedValueChanged;*/
         }
 
         //Компонент ввода
@@ -53,7 +53,7 @@ namespace WinFormsApp
 
         private void buttonSet_Click(object sender, EventArgs e)
         {
-            if(textBoxSet.Text == "")
+            if (textBoxSet.Text == "")
             {
                 customTextBox1.DateValue = null;
             }
@@ -107,6 +107,28 @@ namespace WinFormsApp
         private void buttonGetSelected_Click(object sender, EventArgs e)
         {
             MessageBox.Show((customDataGridView1.GetSelectedObject<Person>()).ToString());
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
+            var documentTitle = "Заголовок документа";
+            var tablesList = new List<string[,]>
+            {
+                new string[,]
+                {
+                    { "Стр 1 Кол 1", "Стр 1 Кол 2" },
+                    { "Стр 2 Кол 1", "Стр 2 Кол 2" },
+                    { "Стр 3 Кол 1", "Стр 3 Кол 2" },
+                },
+                new string[,]
+                {
+                    { "Стр 1 Кол 1", "Стр 1 Кол 2" },
+                    { "Стр 2 Кол 1", "Стр 2 Кол 2" },
+                    { "Стр 3 Кол 1", "Стр 3 Кол 2" },
+                },
+            };
+            customComponentForXlsTable1.GenerateExcelDocument(filePath, documentTitle, tablesList);
         }
     }
 }

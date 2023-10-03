@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.userControl11 = new WinFormsLibrary.CustomListBox();
             this.buttonClearListBox = new System.Windows.Forms.Button();
             this.buttonAddValue = new System.Windows.Forms.Button();
@@ -45,6 +46,8 @@
             this.buttonAddCells = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
             this.buttonGetSelected = new System.Windows.Forms.Button();
+            this.customComponentForXlsTable1 = new WinFormsLibrary.CustomComponentForXlsTable(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // userControl11
@@ -104,6 +107,7 @@
             // 
             // customTextBox1
             // 
+            this.customTextBox1.DateValue = null;
             this.customTextBox1.Location = new System.Drawing.Point(321, 129);
             this.customTextBox1.Name = "customTextBox1";
             this.customTextBox1.Size = new System.Drawing.Size(150, 150);
@@ -200,11 +204,22 @@
             this.buttonGetSelected.UseVisualStyleBackColor = true;
             this.buttonGetSelected.Click += new System.EventHandler(this.buttonGetSelected_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(71, 506);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(906, 450);
+            this.ClientSize = new System.Drawing.Size(906, 592);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonGetSelected);
             this.Controls.Add(this.buttonClear);
             this.Controls.Add(this.buttonAddCells);
@@ -249,5 +264,7 @@
         private Button buttonAddCells;
         private Button buttonClear;
         private Button buttonGetSelected;
+        private WinFormsLibrary.CustomComponentForXlsTable customComponentForXlsTable1;
+        private Button button1;
     }
 }

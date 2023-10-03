@@ -1,4 +1,4 @@
-﻿namespace WinFormsLibrary
+﻿namespace WinFormsLibrary.visual
 {
     public class GridColumnConfig
     {

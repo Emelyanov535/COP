@@ -73,7 +73,7 @@ namespace WinFormsLibrary
             }
         }
 
-        public event EventHandler CustomValueChanged
+        /*public event EventHandler CustomValueChanged
         {
             add
             {
@@ -85,6 +85,6 @@ namespace WinFormsLibrary
                 checkBoxDate.CheckedChanged -= value;
                 textBoxDate.TextChanged -= value;
             }
-        }
+        }*/
     }
 }
