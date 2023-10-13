@@ -1,6 +1,8 @@
 using System;
+using WinFormsLibrary.not_visual;
 using WinFormsLibrary.visual;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static WinFormsLibrary.not_visual.Gistograma;
 
 namespace WinFormsApp
 {
@@ -145,6 +147,30 @@ namespace WinFormsApp
             };
             componentWithSettings1.GenerateTableDocument(filePath, documentTitle, columnHeaderNames, rowHeaderNames, tableData);
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
+            string documentTitle = "Document Title";
+            string chartTitle = "Chart Title";
+
+            var chartData = new List<ChartData>
+                {
+                    new ChartData
+                    {
+                        SeriesName = "Серия 1",
+                        DataPoints = new List<double> { 10, 20, 30, 40, 50 }
+                    },
+                    new ChartData
+                    {
+                        SeriesName = "Серия 2",
+                        DataPoints = new List<double> { 15, 25, 35, 45, 55 }
+                    }
+                };
+
+
+            gistograma1.GenerateChartDocument(filePath, documentTitle, chartTitle, LegendPosition.Bottom, chartData);
         }
     }
 }

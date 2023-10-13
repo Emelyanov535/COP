@@ -50,6 +50,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.componentWithSettings1 = new WinFormsLibrary.not_visual.ComponentWithSettings(this.components);
+            this.gistograma1 = new WinFormsLibrary.not_visual.Gistograma(this.components);
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // userControl11
@@ -226,11 +228,22 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(233, 506);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 21;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 592);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonGetSelected);
@@ -281,5 +294,7 @@
         private Button button1;
         private Button button2;
         private WinFormsLibrary.not_visual.ComponentWithSettings componentWithSettings1;
+        private WinFormsLibrary.not_visual.Gistograma gistograma1;
+        private Button button3;
     }
 }
