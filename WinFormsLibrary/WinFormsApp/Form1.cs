@@ -137,40 +137,37 @@ namespace WinFormsApp
         {
             string filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
             string documentTitle = "Заголовок документа";
-            List<string> columnHeaderNames = new List<string> { "Column1", "Column2", "Column3" };
-            List<string> rowHeaderNames = new List<string> { "Row1", "Row2", "Row3" };
-            List<List<object>> tableData = new List<List<object>>
-            {
-                new List<object> { "Data1", "Data2", "Data3" },
-                new List<object> { "Data4", "Data5", "Data6" },
-                new List<object> { "Data7", "Data8", "Data9" }
-            };
-            componentWithSettings1.GenerateTableDocument(filePath, documentTitle, columnHeaderNames, rowHeaderNames, tableData);
 
+            var data = new List<Person>
+            {
+                new Person("P1", 30, 180),
+                new Person("P2", 18, 175),
+                new Person("P3", 20, 170)
+            }; 
+           
+            var columnConfigs = new List<ColumnConfig>
+            {
+                new ColumnConfig { Width = 50f, PropertyName = "Age" },
+                new ColumnConfig { Width = 70f, PropertyName = "Name" },
+                new ColumnConfig { Width = 100f, PropertyName = "Height" },
+            };
+            componentWithSettings1.GenerateExcelDocument(filePath, documentTitle, columnConfigs, 5f, 10f, data);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             string filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
-            string documentTitle = "Document Title";
+            string documentTitle = "Document Title1";
             string chartTitle = "Chart Title";
 
-            var chartData = new List<ChartData>
-                {
-                    new ChartData
-                    {
-                        SeriesName = "Серия 1",
-                        DataPoints = new List<double> { 10, 20, 30, 40, 50 }
-                    },
-                    new ChartData
-                    {
-                        SeriesName = "Серия 2",
-                        DataPoints = new List<double> { 15, 25, 35, 45, 55 }
-                    }
-                };
+            var data = new List<ChartData>
+            {
+                new ChartData { SeriesName = "Series 1", Data = new double[] { 10, 20, 30, 40, 50, 12 } },
+                new ChartData { SeriesName = "Series 2", Data = new double[] { 15, 25, 35, 45, 55, 13 } },
+                new ChartData { SeriesName = "Series 3", Data = new double[] { 15, 25, 35, 45, 55, 14 } },
+            };
 
-
-            gistograma1.GenerateChartDocument(filePath, documentTitle, chartTitle, LegendPosition.Bottom, chartData);
+            gistograma1.GenerateExcelChartDocument(filePath, documentTitle, chartTitle, LegendPosition.Top, data);
         }
     }
 }

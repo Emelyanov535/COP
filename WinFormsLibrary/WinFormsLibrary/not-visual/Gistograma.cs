@@ -1,13 +1,8 @@
-﻿
-
-using NPOI.HSSF.UserModel;
+﻿using NPOI.POIFS.Crypt.Dsig;
 using NPOI.SS.UserModel;
-using NPOI.SS.UserModel.Charts;
-using NPOI.SS.Util;
-using NPOI.XSSF.Streaming;
 using NPOI.XSSF.UserModel;
-using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
+using OfficeOpenXml;
 using System.ComponentModel;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
@@ -26,61 +21,69 @@ namespace WinFormsLibrary.not_visual
             InitializeComponent();
         }
 
-        public void GenerateChartDocument(
-            string filePath,
-            string documentTitle,
-            string chartTitle,
-            LegendPosition legendPosition,
-            List<ChartData> chartDataList)
+        public void GenerateExcelChartDocument(string filePath, string documentTitle, string chartTitle, LegendPosition legendPosition, List<ChartData> dataSeries)
         {
-            // Проверка на заполненность входных данных
-            if (string.IsNullOrEmpty(filePath) ||
-                string.IsNullOrEmpty(documentTitle) ||
-                string.IsNullOrEmpty(chartTitle) ||
-                chartDataList == null || chartDataList.Count == 0)
+            if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(documentTitle) || dataSeries == null || dataSeries.Count == 0)
             {
-                throw new ArgumentException("Все входные данные должны быть заполнены.");
+                throw new ArgumentException("Invalid input data");
             }
-
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            // Создаем новый пакет Excel
-            using (var package = new ExcelPackage())
+            FileInfo fileInfo = new FileInfo(filePath);
+            using (var package = new ExcelPackage(fileInfo))
             {
-                var workbook = package.Workbook;
-                var worksheet = workbook.Worksheets.Add("Гистограмма");
+                var worksheet = package.Workbook.Worksheets.Add(documentTitle);
 
-                // Добавляем заголовок документа
-                worksheet.Cells["A1"].Value = documentTitle;
+                int rowStart = 1;
+                int columnStart = 2;
+                int count = 1;
+                int qwe = 0;
 
-                // Добавляем заголовок для гистограммы
-                worksheet.Cells["A3"].Value = chartTitle;
+                foreach (var chartData in dataSeries)
+                {
+                    worksheet.Cells[rowStart, columnStart].Value = chartData.SeriesName;
+                    for (int i = 0; i < chartData.Data.Length; i++)
+                    {
+                        worksheet.Cells[rowStart + 1 + i, columnStart].Value = chartData.Data[i];
+                        worksheet.Cells[rowStart + 1 + i, 1].Value = count.ToString();
+                        count++;
+                        qwe++;
+                    }
+                    columnStart++;
+                    count = 1;
+                }
 
-                // Добавляем данные для гистограммы
-                var startCell = worksheet.Cells["A5"];
-                var endCell = worksheet.Cells["B5"].Offset(chartDataList.Count, 1);
-                var chartDataSeries = worksheet.Cells[startCell.Address + ":" + endCell.Address];
-                chartDataSeries.LoadFromCollection(
-                    chartDataList.Select(c => new { c.SeriesName, c.DataPoints }), true);
-
-                // Создаем гистограмму
-                var chart = worksheet.Drawings.AddChart("Гистограмма", eChartType.ColumnClustered);
-                chart.SetPosition(6, 0, 1, 0);
-                chart.SetSize(600, 400);
+                var chart = worksheet.Drawings.AddChart(chartTitle, eChartType.ColumnClustered);
+                chart.SetPosition(1, 0, 3, 0);
+                chart.SetSize(800, 400);
                 chart.Title.Text = chartTitle;
 
-                // Устанавливаем расположение легенды
-                // Устанавливаем расположение легенды
-                chart.Legend.Position = (eLegendPosition)legendPosition; // Замените на нужное значение
 
+                switch (legendPosition)
+                {
+                    case LegendPosition.Top:
+                        chart.Legend.Position = eLegendPosition.Top;
+                        break;
+                    case LegendPosition.Right:
+                        chart.Legend.Position = eLegendPosition.Right;
+                        break;
+                    case LegendPosition.Bottom:
+                        chart.Legend.Position = eLegendPosition.Bottom;
+                        break;
+                    case LegendPosition.Left:
+                        chart.Legend.Position = eLegendPosition.Left;
+                        break;
+                }
 
-                // Устанавливаем источник данных для гистограммы
-                var dataRange = chartDataSeries.Offset(1, 0, chartDataList.Count, 1);
-                var categoriesRange = chartDataSeries.Offset(0, 1, chartDataList.Count, 1);
-                var chartSeries = chart.Series.Add(dataRange, categoriesRange);
-                chartSeries.Header = chartDataList[0].SeriesName;
+                columnStart = 2;
+                rowStart = 1;
+                for (int i = 0; i < dataSeries.Count; i++)
+                {
+                    var dataRange = worksheet.Cells[rowStart + 1, columnStart + i, rowStart + dataSeries[0].Data.Length, columnStart + i];
+                    var series = chart.Series.Add(dataRange, worksheet.Cells[rowStart + 1, 1, rowStart + qwe/2, 1]);
+                    series.Header = dataSeries[i].SeriesName;
+                }
 
-                // Сохраняем Excel-файл
-                package.SaveAs(new FileInfo(filePath));
+                package.Save();
             }
         }
     }

@@ -9,8 +9,8 @@ namespace WinFormsLibrary.not_visual
     public enum LegendPosition
     {
         Top,
+        Right,
         Bottom,
-        Left,
-        Right
+        Left
     }
 }

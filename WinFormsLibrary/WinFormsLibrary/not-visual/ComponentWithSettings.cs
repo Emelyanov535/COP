@@ -1,4 +1,5 @@
-﻿using NPOI.SS.UserModel;
+﻿using NPOI.SS.Formula.Functions;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.ComponentModel;
 
@@ -18,38 +19,42 @@ namespace WinFormsLibrary.not_visual
             InitializeComponent();
         }
 
-        public void GenerateTableDocument(string filePath, string documentTitle, List<string> columnHeaderNames, List<string> rowHeaderNames, List<List<object>> tableData)
+        public void GenerateExcelDocument<T>(string filePath, string documentTitle, List<ColumnConfig> columnConfigs, float headerHeight, float rowHeight, List<T> data)
         {
-            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(documentTitle) || columnHeaderNames == null || rowHeaderNames == null || tableData == null)
+            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(documentTitle) || columnConfigs == null || columnConfigs.Count == 0 || data == null || data.Count == 0)
             {
-                throw new ArgumentNullException("Один или несколько параметров отсутсвуют.");
+                throw new ArgumentException("Invalid input data.");
             }
 
-            if (columnHeaderNames.Count != tableData[0].Count || rowHeaderNames.Count != tableData.Count)
-            {
-                throw new ArgumentException("Несоответствие между количеством заголовков и данных.");
-            }
-
-            IWorkbook workbook = new XSSFWorkbook();
+            XSSFWorkbook workbook = new XSSFWorkbook();
             ISheet sheet = workbook.CreateSheet("Документ");
 
             IRow titleRow = sheet.CreateRow(0);
-            titleRow.CreateCell(0).SetCellValue(documentTitle);
+            ICell titleCell = titleRow.CreateCell(0);
+            titleCell.SetCellValue(documentTitle);
 
             IRow headerRow = sheet.CreateRow(1);
-            for (int i = 0; i < columnHeaderNames.Count; i++)
+            for (int i = 0; i < columnConfigs.Count; i++)
             {
-                headerRow.CreateCell(i + 1).SetCellValue(columnHeaderNames[i]);
+                ICell headerCell = headerRow.CreateCell(i);
+                headerCell.SetCellValue(columnConfigs[i].PropertyName);
+                sheet.SetColumnWidth(i, (int)(columnConfigs[i].Width * 256));
+                headerRow.HeightInPoints = headerHeight;
             }
 
-            for (int rowIndex = 0; rowIndex < tableData.Count; rowIndex++)
+            // Add data
+            for (int i = 0; i < data.Count; i++)
             {
-                IRow dataRow = sheet.CreateRow(rowIndex + 2);
-                dataRow.CreateCell(0).SetCellValue(rowHeaderNames[rowIndex]);
-
-                for (int colIndex = 0; colIndex < columnHeaderNames.Count; colIndex++)
+                IRow dataRow = sheet.CreateRow(i + 2);
+                for (int j = 0; j < columnConfigs.Count; j++)
                 {
-                    dataRow.CreateCell(colIndex + 1).SetCellValue(tableData[rowIndex][colIndex].ToString());
+                    var property = typeof(T).GetProperty(columnConfigs[j].PropertyName);
+                    if (property != null)
+                    {
+                        ICell dataCell = dataRow.CreateCell(j);
+                        dataCell.SetCellValue(property.GetValue(data[i]).ToString());
+                        dataRow.HeightInPoints = rowHeight;
+                    }
                 }
             }
 

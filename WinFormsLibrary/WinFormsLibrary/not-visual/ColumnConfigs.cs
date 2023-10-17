@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WinFormsLibrary.not_visual
 {
-    public class ChartData
+    public class ColumnConfig
     {
-        public string SeriesName { get; set; }
-        public double[] Data { get; set; }
+        public float Width { get; set; }
+        public string PropertyName { get; set; }
     }
 }
