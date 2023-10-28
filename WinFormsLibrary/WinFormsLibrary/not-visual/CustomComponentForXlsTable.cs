@@ -36,7 +36,7 @@ namespace WinFormsLibrary
             var workbook = new XSSFWorkbook();
 
             // Устанавливаем заголовок документа
-            var titleRow = workbook.CreateSheet("Документ").CreateRow(0);
+            var titleRow = workbook.CreateSheet("Документ 1").CreateRow(0);
             var titleCell = titleRow.CreateCell(0);
             titleCell.SetCellValue(documentTitle);
 

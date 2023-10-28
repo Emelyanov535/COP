@@ -113,7 +113,7 @@ namespace WinFormsApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
+            var filePath = "C:\\Users\\Admin\\Desktop\\1.xlsx";
             var documentTitle = "Заголовок документа";
             var tablesList = new List<string[,]>
             {
@@ -135,7 +135,7 @@ namespace WinFormsApp
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
+            string filePath = "C:\\Users\\Admin\\Desktop\\2.xlsx";
             string documentTitle = "Заголовок документа";
 
             var data = new List<Person>
@@ -151,13 +151,13 @@ namespace WinFormsApp
                 new ColumnConfig { Width = 70f, PropertyName = "Name" },
                 new ColumnConfig { Width = 100f, PropertyName = "Height" },
             };
-            componentWithSettings1.GenerateExcelDocument(filePath, documentTitle, columnConfigs, 5f, 10f, data);
+            componentWithSettings1.GenerateExcelDocument(filePath, documentTitle, columnConfigs, 25f, 35f, data);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string filePath = "C:\\Users\\Admin\\Desktop\\123.xlsx";
-            string documentTitle = "Document Title1";
+            string filePath = "C:\\Users\\Admin\\Desktop\\3.xlsx";
+            string documentTitle = "Документ 3";
             string chartTitle = "Chart Title";
 
             var data = new List<ChartData>

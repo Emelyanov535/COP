@@ -2,6 +2,7 @@
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.ComponentModel;
+using HorizontalAlignment = NPOI.SS.UserModel.HorizontalAlignment;
 
 namespace WinFormsLibrary.not_visual
 {
@@ -27,11 +28,17 @@ namespace WinFormsLibrary.not_visual
             }
 
             XSSFWorkbook workbook = new XSSFWorkbook();
-            ISheet sheet = workbook.CreateSheet("Документ");
+            ISheet sheet = workbook.CreateSheet("Документ 2");
 
             IRow titleRow = sheet.CreateRow(0);
             ICell titleCell = titleRow.CreateCell(0);
             titleCell.SetCellValue(documentTitle);
+            var titleCellStyle = workbook.CreateCellStyle();
+            var titleFont = workbook.CreateFont();
+            titleFont.FontHeightInPoints = 20;
+            titleFont.IsBold = true;
+            titleCellStyle.SetFont(titleFont);
+            titleCell.CellStyle = titleCellStyle;
 
             IRow headerRow = sheet.CreateRow(1);
             for (int i = 0; i < columnConfigs.Count; i++)
@@ -40,9 +47,18 @@ namespace WinFormsLibrary.not_visual
                 headerCell.SetCellValue(columnConfigs[i].PropertyName);
                 sheet.SetColumnWidth(i, (int)(columnConfigs[i].Width * 256));
                 headerRow.HeightInPoints = headerHeight;
+                titleFont.FontHeightInPoints = 20;
+                titleFont.IsBold = true;
+                titleCellStyle.SetFont(titleFont);
+                headerCell.CellStyle = titleCellStyle;
             }
 
-            // Add data
+            var firstColumnCellStyle = workbook.CreateCellStyle();
+            var firstColumnFont = workbook.CreateFont();
+            firstColumnFont.FontHeightInPoints = 20;
+            firstColumnFont.IsBold = true;
+            firstColumnCellStyle.SetFont(firstColumnFont);
+
             for (int i = 0; i < data.Count; i++)
             {
                 IRow dataRow = sheet.CreateRow(i + 2);
@@ -54,6 +70,11 @@ namespace WinFormsLibrary.not_visual
                         ICell dataCell = dataRow.CreateCell(j);
                         dataCell.SetCellValue(property.GetValue(data[i]).ToString());
                         dataRow.HeightInPoints = rowHeight;
+ 
+                        if (j == 0)
+                        {
+                            dataCell.CellStyle = firstColumnCellStyle;
+                        }
                     }
                 }
             }

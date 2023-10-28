@@ -29,34 +29,17 @@ namespace WinFormsLibrary.not_visual
             }
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             FileInfo fileInfo = new FileInfo(filePath);
-            using (var package = new ExcelPackage(fileInfo))
+            using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add(documentTitle);
 
                 int rowStart = 1;
                 int columnStart = 2;
-                int count = 1;
-                int qwe = 0;
-
-                foreach (var chartData in dataSeries)
-                {
-                    worksheet.Cells[rowStart, columnStart].Value = chartData.SeriesName;
-                    for (int i = 0; i < chartData.Data.Length; i++)
-                    {
-                        worksheet.Cells[rowStart + 1 + i, columnStart].Value = chartData.Data[i];
-                        worksheet.Cells[rowStart + 1 + i, 1].Value = count.ToString();
-                        count++;
-                        qwe++;
-                    }
-                    columnStart++;
-                    count = 1;
-                }
 
                 var chart = worksheet.Drawings.AddChart(chartTitle, eChartType.ColumnClustered);
-                chart.SetPosition(1, 0, 3, 0);
+                chart.SetPosition(1, 0, 1, 0);
                 chart.SetSize(800, 400);
                 chart.Title.Text = chartTitle;
-
 
                 switch (legendPosition)
                 {
@@ -74,15 +57,14 @@ namespace WinFormsLibrary.not_visual
                         break;
                 }
 
-                columnStart = 2;
-                rowStart = 1;
                 for (int i = 0; i < dataSeries.Count; i++)
                 {
-                    var dataRange = worksheet.Cells[rowStart + 1, columnStart + i, rowStart + dataSeries[0].Data.Length, columnStart + i];
-                    var series = chart.Series.Add(dataRange, worksheet.Cells[rowStart + 1, 1, rowStart + qwe/2, 1]);
+                    var data = dataSeries[i].Data;
+                    var dataRange = worksheet.Cells[rowStart + 1, columnStart + i, rowStart + data.Length, columnStart + i];
+                    dataRange.LoadFromCollection(data);
+                    var series = chart.Series.Add(dataRange, worksheet.Cells[rowStart + 1, 1, rowStart + data.Length, 1]);
                     series.Header = dataSeries[i].SeriesName;
                 }
-
                 package.Save();
             }
         }
