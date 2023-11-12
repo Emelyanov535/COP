@@ -56,7 +56,7 @@ namespace WinFormsApp
         {
             switch (e.KeyCode)
             {
-                case Keys.Insert:
+                case Keys.Tab:
                     AddType();
                     e.Handled = true;
                     break;

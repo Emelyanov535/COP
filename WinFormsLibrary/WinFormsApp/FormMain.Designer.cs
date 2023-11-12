@@ -37,20 +37,20 @@
             // 
             // listBoxValues
             // 
-            this.listBoxValues.Location = new System.Drawing.Point(12, 12);
+            this.listBoxValues.Location = new System.Drawing.Point(14, 16);
+            this.listBoxValues.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.listBoxValues.Name = "listBoxValues";
             this.listBoxValues.SelectedIndex = -1;
-            this.listBoxValues.Size = new System.Drawing.Size(639, 314);
+            this.listBoxValues.Size = new System.Drawing.Size(760, 419);
             this.listBoxValues.TabIndex = 0;
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(658, 338);
+            this.ClientSize = new System.Drawing.Size(780, 396);
             this.Controls.Add(this.listBoxValues);
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
             this.Text = "FormMain";
             this.Load += new System.EventHandler(this.FormMain_Load);
