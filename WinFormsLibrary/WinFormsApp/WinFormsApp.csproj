@@ -19,7 +19,10 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\DataBaseImplements\DataBase.csproj" />
+    <ProjectReference Include="..\PluginsConventionLibrary\PluginsConventionLibrary.csproj" />
     <ProjectReference Include="..\WinFormsLibrary\WinFormsLibrary.csproj" />
   </ItemGroup>
-
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /Y &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)plugin\*.dll&quot;" />
+  </Target>
 </Project>
